@@ -4,10 +4,10 @@
     "beforeBuildCommand": "npm run build",
     "beforeDevCommand": "npm run dev",
     "devPath": "http://localhost:5173",
-    "distDir": "../build"
+    "distDir": "../dist"
   },
   "package": {
-    "productName": "chat-starter",
+    "productName": "CMPG315_Group2_Chat_App",
     "version": "0.1.0"
   },
   "tauri": {
@@ -29,7 +29,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "com.cmpg315group2chatapp.dev",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
