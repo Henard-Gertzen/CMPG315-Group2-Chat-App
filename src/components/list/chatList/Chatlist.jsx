@@ -14,6 +14,10 @@ const ChatList = () => {
   const { currentUser } = useUserStore();
   const { chatId, changeChat } = useChatStore();
 
+  const handleAddModeToggle = () => {
+    setAddMode((prev) => !prev);
+  };
+
   useEffect(() => {
     const unSub = onSnapshot(
       doc(db, "userchats", currentUser.id),
@@ -114,7 +118,7 @@ const ChatList = () => {
         </div>
       ))}
 
-      {addMode && <AddUser />}
+      {addMode && <AddUser onClose={handleAddModeToggle}/>}
     </div>
   );
 };

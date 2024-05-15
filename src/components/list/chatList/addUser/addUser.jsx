@@ -15,10 +15,11 @@ import {
 import { useState } from "react";
 import { useUserStore } from "../../../../lib/userStore";
 
-const AddUser = () => {
+const AddUser = ({ onClose }) => {
   const [user, setUser] = useState(null);
 
   const { currentUser } = useUserStore();
+
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -69,6 +70,7 @@ const AddUser = () => {
           updatedAt: Date.now(),
         }),
       });
+      onClose();
     } catch (err) {
       console.log(err);
     }
