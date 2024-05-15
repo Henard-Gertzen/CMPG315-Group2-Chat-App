@@ -95,7 +95,6 @@ const Chat = () => {
 
         if (userChatsSnapshot.exists()) {
           const userChatsData = userChatsSnapshot.data();
-          endRef.current.scrollIntoView({ behavior: "smooth" });
           const chatIndex = userChatsData.chats.findIndex(
             (c) => c.chatId === chatId
           );
