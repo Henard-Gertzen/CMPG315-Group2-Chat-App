@@ -13,6 +13,7 @@ import { useChatStore } from "../../lib/chatStore";
 import { useUserStore } from "../../lib/userStore";
 import upload from "../../lib/upload";
 import { format } from "timeago.js";
+import { toast } from "react-toastify";
 
 const Chat = () => {
 
@@ -24,7 +25,6 @@ const Chat = () => {
     file: null,
     url: "",
   });
-
   const { currentUser } = useUserStore();
   const { chatId, user, isCurrentUserBlocked, isReceiverBlocked } =
     useChatStore();
@@ -39,10 +39,8 @@ const Chat = () => {
   
       return () => {
         unSub();
-        setShouldScroll(true);
       };
     }, [chatId]);
-  
   } catch (error) {
     console.log(error)
   }
@@ -65,16 +63,25 @@ const Chat = () => {
         file: e.target.files[0],
         url: URL.createObjectURL(e.target.files[0]),
       });
+      toast.info("Image preloaded, enter a message to send!");
+      endRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
 
   const handleSend = async () => {
-    if (text === "") return;
+    if (text === "") 
+      {
+        toast.warn("Please enter a message!");
+        return;
+      }
+      
+      const toastId = toast.loading("Image uploading...");
 
     let imgUrl = null;
 
     try {
       if (img.file) {
+        toastId;
         imgUrl = await upload(img.file);
       }
 
@@ -95,6 +102,7 @@ const Chat = () => {
 
         if (userChatsSnapshot.exists()) {
           const userChatsData = userChatsSnapshot.data();
+          endRef.current.scrollIntoView({ behavior: "smooth" });
           const chatIndex = userChatsData.chats.findIndex(
             (c) => c.chatId === chatId
           );
@@ -108,10 +116,12 @@ const Chat = () => {
           });
         }
       });
+      endRef.current.scrollIntoView({ behavior: "smooth" });
     } catch (err) {
       console.log(err);
     } finally{
-    endRef.current.scrollIntoView({ behavior: "smooth" });
+      toast.dismiss(toastId);
+      toast.success("Image uploaded!");
     setImg({
       file: null,
       url: "",
@@ -177,6 +187,11 @@ const Chat = () => {
           value={text}
           onChange={(e) => setText(e.target.value)}
           disabled={isCurrentUserBlocked || isReceiverBlocked}
+          onKeyDown={(e) => {
+            if(e.key === "Enter" && text.trim() !== ""){
+              handleSend();
+            }
+          }}
         />
         <div className="emoji">
           <img
