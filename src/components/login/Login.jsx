@@ -80,8 +80,9 @@ const Login = () => {
       console.log(err);
       toast.error(err.message);
     } finally {
-      toast.success("Account created! You can login now!");
+      toast.success("Account created! Signing you in now!");
       setLoading(false);
+      window.location.reload();
     }
   };
 
