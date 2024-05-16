@@ -76,13 +76,11 @@ const Login = () => {
       await setDoc(doc(db, "userchats", res.user.uid), {
         chats: [],
       });
-
-      toast.success("Account created! Logging you in now!");
-      window.location.href = window.location.href;
     } catch (err) {
       console.log(err);
       toast.error(err.message);
     } finally {
+      toast.success("Account created! You can login now!");
       setLoading(false);
     }
   };
